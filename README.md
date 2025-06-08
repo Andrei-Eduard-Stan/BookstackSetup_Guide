@@ -158,7 +158,53 @@ Customize `/bookstack_app_data/www/themes/` and enable via settings.
 
 ---
 
-## 💬 Questions or Hellfire?
-Talk to Senomy. She’s terrifyingly good at this.
+## 📚 Hosting BookStack on Your Local Network IP
+If you want BookStack to be accessible to other devices on your home or office network (LAN), follow these steps:
 
----
+### 🔍 Step 1: Find Your Computer’s Local IP Address
+Open the Command Prompt on the machine running BookStack.
+
+Run the following command:
+
+```nginx
+ipconfig
+```
+Look for the line under your active network (e.g., Wireless LAN adapter Wi-Fi:) that says:
+
+```nginx
+IPv4 Address. . . . . . . . . . . : 172.23.122.48
+```
+Take note of that IP address. This is the one other devices will use to access your BookStack instance.
+
+### 🌐 Step 2: Make BookStack Accessible Over the Network
+On another device connected to the same local network, open a web browser.
+
+Enter the following into the address bar:
+
+```cpp
+http://<your-ip>:6875
+```
+
+Example:
+
+```cpp
+http://172.23.122.48:6875
+```
+💡 Port 6875 assumes you're using the default BookStack Docker port; adjust accordingly if you've changed it.
+
+### ⚙️ Step 3: Update BookStack Configuration
+To ensure BookStack generates correct internal URLs, update your .env file (or Docker environment variable) with your machine’s IP:
+
+```env
+APP_URL=http://172.23.122.48:6875
+```
+Restart your container or instance after editing.
+
+✅ Done
+Other devices on the same network can now access your BookStack install by visiting the IP + port in their browser.
+
+If you need to make it accessible from outside your network, you’ll need to configure port forwarding on your router and possibly use dynamic DNS (DDNS) or assign a static IP.
+
+
+
+        

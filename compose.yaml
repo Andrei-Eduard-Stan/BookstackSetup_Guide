@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  bookstack_db:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: bookstack_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=vinushka_root
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=vinushka
+    volumes:
+      - ./bookstack_db_data:/config
+    restart: unless-stopped
+
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_HOST=bookstack_db
+      - DB_USER=bookstack
+      - DB_PASS=vinushka
+      - DB_DATABASE=bookstackapp
+      - APP_URL=http://localhost:6875
+      - APP_KEY=your_generated_key
+    ports:
+      - 6875:80
+    volumes:
+      - ./bookstack_app_data:/config
+    depends_on:
+      - bookstack_db
+    restart: unless-stopped
